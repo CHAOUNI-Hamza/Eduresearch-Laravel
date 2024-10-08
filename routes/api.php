@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LivreController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\StatistiquesController;
+use App\Http\Controllers\DoctorantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,10 @@ Route::put('admin/livres/{livre}', [LivreController::class, 'updateAdmin']);
 Route::apiResource('articles', ArticleController::class);
 Route::post('admin/articles', [ArticleController::class, 'storeAdmin']);
 Route::put('admin/articles/{article}', [ArticleController::class, 'updateAdmin']);
+
+Route::apiResource('doctorants', DoctorantController::class);
+Route::post('admin/doctorants', [DoctorantController::class, 'storeAdmin']);
+Route::put('admin/doctorants/{livre}', [DoctorantController::class, 'updateAdmin']);
 
 
 // Routes avancées

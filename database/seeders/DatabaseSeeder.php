@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             LivreSeeder::class,
             ArticleSeeder::class,
+            Doctorant::class,
         ]);
     }
 }
