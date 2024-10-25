@@ -60,6 +60,11 @@ Route::put('admin/articles/{article}', [ArticleController::class, 'updateAdmin']
 Route::apiResource('doctorants', DoctorantController::class);
 Route::post('admin/doctorants', [DoctorantController::class, 'storeAdmin']);
 Route::put('admin/doctorants/{livre}', [DoctorantController::class, 'updateAdmin']);
+// Route pour obtenir les doctorants d'un professeur
+Route::get('admin/professor/doctorants', [DoctorantController::class, 'getDoctorants']);
+
+// Route pour obtenir le laboratoire d'un professeur
+Route::get('admin/professor/laboratoire', [DoctorantController::class, 'getLaboratoire']);
 
 
 // Routes avancées

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctorant;
+use Illuminate\Http\Request;
+use App\Models\User;
 use App\Http\Requests\StoreDoctorantRequest;
 use App\Http\Requests\UpdateDoctorantRequest;
 use App\Http\Resources\DoctorantResource;
+use App\Http\Resources\UserResource;
 use Carbon\Carbon;
 
 class DoctorantController extends Controller
@@ -19,6 +22,24 @@ class DoctorantController extends Controller
     {
         $doctorants = Doctorant::with('user')->get();
         return DoctorantResource::collection($doctorants);
+    }
+
+    // Obtenir les doctorants d'un professeur
+    public function getDoctorants(Request $request)
+    {
+        $professeur = User::findOrFail($request->input('id_prof'));
+        $doctorants = $professeur->doctorants;
+        return DoctorantResource::collection($doctorants);
+    }
+
+    // Obtenir le laboratoire d'un professeur
+    public function getLaboratoire(Request $request)
+    {
+        // Charger le professeur avec son laboratoire et ses doctorants
+    $professeur = User::with(['laboratoire', 'doctorants'])->findOrFail($request->input('id_prof'));
+
+    // Retourner la ressource UserResource
+    return new UserResource($professeur);
     }
 
     /**
@@ -35,10 +56,10 @@ class DoctorantController extends Controller
         $doctorant->APOGEE = $request->input('APOGEE');
         $doctorant->NOM = $request->input('NOM');
         $doctorant->PRENOM = $request->input('PRENOM');
-        $doctorant->date_inscription = Carbon::createFromFormat('d-m-Y', $request->input('date_inscription'))->format('Y-m-d');
+        $doctorant->date_inscription = Carbon::createFromFormat('Y-m-d', $request->input('date_inscription'))->format('Y-m-d');
         $doctorant->nationalite = $request->input('nationalite', 'marocaine'); 
         if ($request->has('date_soutenance')) {
-            $doctorant->date_soutenance = Carbon::createFromFormat('d-m-Y', $request->input('date_soutenance'))->format('Y-m-d');
+            $doctorant->date_soutenance = Carbon::createFromFormat('Y-m-d', $request->input('date_soutenance'))->format('Y-m-d');
         }
         $doctorant->sujet_these = $request->input('sujet_these');
         $doctorant->user_id = $request->input('user_id');
@@ -53,10 +74,10 @@ class DoctorantController extends Controller
         $doctorant->APOGEE = $request->input('APOGEE');
         $doctorant->NOM = $request->input('NOM');
         $doctorant->PRENOM = $request->input('PRENOM');
-        $doctorant->date_inscription = Carbon::createFromFormat('d-m-Y', $request->input('date_inscription'))->format('Y-m-d');
+        $doctorant->date_inscription = Carbon::createFromFormat('Y-m-d', $request->input('date_inscription'))->format('Y-m-d');
         $doctorant->nationalite = $request->input('nationalite', 'marocaine'); 
         if ($request->has('date_soutenance')) {
-            $doctorant->date_soutenance = Carbon::createFromFormat('d-m-Y', $request->input('date_soutenance'))->format('Y-m-d');
+            $doctorant->date_soutenance = Carbon::createFromFormat('Y-m-d', $request->input('date_soutenance'))->format('Y-m-d');
         }
         $doctorant->sujet_these = $request->input('sujet_these');
         $doctorant->user_id = $request->input('user_id');
@@ -88,10 +109,10 @@ class DoctorantController extends Controller
         $doctorant->APOGEE = $request->input('APOGEE');
         $doctorant->NOM = $request->input('NOM');
         $doctorant->PRENOM = $request->input('PRENOM');
-        $doctorant->date_inscription = Carbon::createFromFormat('d-m-Y', $request->input('date_inscription'))->format('Y-m-d');
+        $doctorant->date_inscription = Carbon::createFromFormat('Y-m-d', $request->input('date_inscription'))->format('Y-m-d');
         $doctorant->nationalite = $request->input('nationalite', 'marocaine'); 
         if ($request->has('date_soutenance')) {
-            $doctorant->date_soutenance = Carbon::createFromFormat('d-m-Y', $request->input('date_soutenance'))->format('Y-m-d');
+            $doctorant->date_soutenance = Carbon::createFromFormat('Y-m-d', $request->input('date_soutenance'))->format('Y-m-d');
         }
         $doctorant->sujet_these = $request->input('sujet_these');
         $doctorant->user_id = $request->input('user_id');
@@ -105,10 +126,10 @@ class DoctorantController extends Controller
         $doctorant->APOGEE = $request->input('APOGEE');
         $doctorant->NOM = $request->input('NOM');
         $doctorant->PRENOM = $request->input('PRENOM');
-        $doctorant->date_inscription = Carbon::createFromFormat('d-m-Y', $request->input('date_inscription'))->format('Y-m-d');
+        $doctorant->date_inscription = Carbon::createFromFormat('Y-m-d', $request->input('date_inscription'))->format('Y-m-d');
         $doctorant->nationalite = $request->input('nationalite', 'marocaine'); 
         if ($request->has('date_soutenance')) {
-            $doctorant->date_soutenance = Carbon::createFromFormat('d-m-Y', $request->input('date_soutenance'))->format('Y-m-d');
+            $doctorant->date_soutenance = Carbon::createFromFormat('Y-m-d', $request->input('date_soutenance'))->format('Y-m-d');
         }
         $doctorant->sujet_these = $request->input('sujet_these');
         $doctorant->user_id = $request->input('user_id');
