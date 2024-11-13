@@ -27,8 +27,12 @@ class DoctorantController extends Controller
     // Obtenir les doctorants d'un professeur
     public function getDoctorants(Request $request)
     {
-        $professeur = User::findOrFail($request->input('id_prof'));
-        $doctorants = $professeur->doctorants;
+        if ($request->filled('prof_id')) {
+            $doctorants = Doctorant::where('user_id', $request->input('prof_id'))->with('user')->get();
+        } else {
+            $doctorants = Doctorant::with('user')->get();
+        }
+    
         return DoctorantResource::collection($doctorants);
     }
 
