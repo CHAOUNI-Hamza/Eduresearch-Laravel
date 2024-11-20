@@ -16,12 +16,12 @@ class UserController extends Controller
     public function index()
     {
         $users = User::orderBy('id', 'desc')->get();
-    $totalUsers = User::count();
+        $totalUsers = User::count();
 
-    return response()->json([
-        'data' => UserResource::collection($users),
-        'total' => $totalUsers
-    ]);
+        return response()->json([
+            'data' => UserResource::collection($users),
+            'total' => $totalUsers
+        ]);
     }
 
     public function store(StoreUserRequest $request)
