@@ -19,4 +19,9 @@ class Laboratoire extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function doctorants()
+    {
+        return $this->hasManyThrough(Doctorant::class, User::class, 'laboratoire_id', 'user_id');
+    }
 }

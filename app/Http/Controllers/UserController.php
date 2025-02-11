@@ -24,6 +24,29 @@ class UserController extends Controller
         ]);
     }
 
+    public function getProfesseurs(Request $request)
+    {
+        $query = User::with(['laboratoire', 'doctorants'])
+        ->where('role', 0); // 0 = professeur
+
+        // Vérifiez si un filtre par professeur est demandé
+        if ($request->has('prof_id')) {
+            $query->where('id', $request->input('prof_id'));
+        }
+
+        $professeurs = $query->get()
+            ->map(function ($user) {
+                return [
+                    'nom' => $user->nom,
+                    'prenom' => $user->prénom,
+                    'laboratoire' => $user->laboratoire ? $user->laboratoire->nom : null,
+                    'nombre_doctorants' => $user->doctorants->count(),
+                ];
+            });
+
+        return response()->json($professeurs);
+    }
+
     public function store(StoreUserRequest $request)
     {
         $user = new User();

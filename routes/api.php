@@ -48,6 +48,7 @@ Route::get('/total-laboratoires/{equipeId}', [EquipeController::class, 'getTotal
 
 Route::apiResource('users', UserController::class);
 Route::put('users/{user}/password', [UserController::class, 'updatePassword']);
+Route::get('/professeurs', [UserController::class, 'getProfesseurs']);
 
 Route::apiResource('livres', LivreController::class);
 Route::post('admin/livres', [LivreController::class, 'storeAdmin']);
@@ -62,6 +63,8 @@ Route::post('admin/doctorants', [DoctorantController::class, 'storeAdmin']);
 Route::put('admin/doctorants/{doctorant}', [DoctorantController::class, 'updateAdmin']);
 // Route pour obtenir les doctorants d'un professeur
 Route::get('admin/professor/doctorants', [DoctorantController::class, 'getDoctorants']);
+// Route pour obtenir les doctorants avec filtrage par date de soutenance
+Route::get('admin/date/doctorants', [DoctorantController::class, 'getDoctorantsDateSoutenance']);
 
 // Route pour obtenir le laboratoire d'un professeur
 Route::get('admin/professor/laboratoire', [DoctorantController::class, 'getLaboratoire']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctorant;
+use App\Models\Laboratoire;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\StoreDoctorantRequest;
@@ -28,22 +29,50 @@ class DoctorantController extends Controller
     public function getDoctorants(Request $request)
     {
         if ($request->filled('prof_id')) {
-            $doctorants = Doctorant::where('user_id', $request->input('prof_id'))->with('user')->get();
+            $doctorants = Doctorant::where('user_id', $request->input('prof_id'))
+                ->with('user')
+                ->orderBy('created_at', 'desc') // Trier par `created_at` en ordre décroissant
+                ->get();
         } else {
-            $doctorants = Doctorant::with('user')->get();
+            $doctorants = Doctorant::with('user')
+                ->orderBy('created_at', 'desc') // Trier par `created_at` en ordre décroissant
+                ->get();
         }
-    
+
+        return DoctorantResource::collection($doctorants);
+    }
+
+    // Obtenir les doctorants avec filtrage par date de soutenance
+    public function getDoctorantsDateSoutenance(Request $request)
+    {
+        $query = Doctorant::with('user')->orderBy('created_at', 'desc');
+
+        // Filtrer par date_soutenance si fourni
+        if ($request->filled('date_soutenance')) {
+            $query->whereDate('date_soutenance', $request->input('date_soutenance'));
+        }
+
+        $doctorants = $query->get();
+
         return DoctorantResource::collection($doctorants);
     }
 
     // Obtenir le laboratoire d'un professeur
     public function getLaboratoire(Request $request)
     {
+        $laboratoire = Laboratoire::with('doctorants.user')->find($request->input('id_labo'));
+
+    if (!$laboratoire) {
+        return response()->json(['message' => 'Laboratoire non trouvé'], 404);
+    }
+
+    return response()->json($laboratoire->doctorants);
+
         // Charger le professeur avec son laboratoire et ses doctorants
-    $professeur = User::with(['laboratoire', 'doctorants'])->findOrFail($request->input('id_prof'));
+    //$professeur = User::with(['laboratoire', 'doctorants'])->findOrFail($request->input('id_prof'));
 
     // Retourner la ressource UserResource
-    return new UserResource($professeur);
+    //return new UserResource($professeur);
     }
 
     /**

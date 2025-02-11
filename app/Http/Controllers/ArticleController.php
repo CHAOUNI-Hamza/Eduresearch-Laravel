@@ -21,29 +21,29 @@ class ArticleController extends Controller
     {
         $query = Article::query();
 
-    if ($request->filled('annee')) {
-        $query->where('annee', $request->input('annee'));
-    }
+        if ($request->filled('annee')) {
+            $query->where('annee', $request->input('annee'));
+        }
 
-    if ($request->filled('laboratoire_id')) {
-        $query->whereHas('user.laboratoire', function($q) use ($request) {
-            $q->where('id', $request->input('laboratoire_id'));
-        });
-    }
+        if ($request->filled('laboratoire_id')) {
+            $query->whereHas('user.laboratoire', function($q) use ($request) {
+                $q->where('id', $request->input('laboratoire_id'));
+            });
+        }
 
-    if ($request->filled('equipe_id')) {
-        $query->whereHas('user.equipe', function($q) use ($request) {
-            $q->where('id', $request->input('equipe_id'));
-        });
-    }
+        if ($request->filled('equipe_id')) {
+            $query->whereHas('user.equipe', function($q) use ($request) {
+                $q->where('id', $request->input('equipe_id'));
+            });
+        }
 
-    $articles = $query->orderBy('annee', 'desc')->orderBy('id', 'desc')->get(); 
-    $totalArticles = $query->count();
+        $articles = $query->orderBy('annee', 'desc')->orderBy('id', 'desc')->get(); 
+        $totalArticles = $query->count();
 
-    return response()->json([
-        'data' => ArticleResource::collection($articles),
-        'total' => $totalArticles
-    ]);
+        return response()->json([
+            'data' => ArticleResource::collection($articles),
+            'total' => $totalArticles
+        ]);
     }
 
     public function indexArticles()

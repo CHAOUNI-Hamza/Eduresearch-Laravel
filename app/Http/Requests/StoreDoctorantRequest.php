@@ -24,7 +24,15 @@ class StoreDoctorantRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'CIN' => 'required',
+            'APOGEE' => 'required',
+            'NOM' => 'required',
+            'PRENOM' => 'required', 
+            'date_inscription' => 'required', 
+            'nationalite' => 'required', 
+            'date_soutenance' => 'nullable', 
+            'sujet_these' => 'required', 
+            'user_id' => 'required',
         ];
     }
 }
